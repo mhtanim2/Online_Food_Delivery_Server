@@ -58,8 +58,8 @@ const port = process.env.PORT || 3000;
 
 mongoose
   .connect(URI, {
-    user: 'firozteam5',
-    pass: 'jdtp2ahzfBLEVwHb',
+    user: process.env.USER,
+    pass: process.env.PASS,
     autoIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
