@@ -2,69 +2,26 @@ const bcrypt = require('bcrypt');
 const User = require('../../models/customer/customerModel');
 const OTPModel = require('../../models/customer/OTPModel');
 const sendEmailUtility = require('../../utility/sendEmailUtility');
-const createToekn = require('../../utility/createToken');
+const customerCreateService = require('../../services/user/customerCreateService');
+const customerLoginService = require('../../services/user/customerLoginService');
 
 // registration
 const registration = async (req, res) => {
-  try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const newUser = new User({
-      ...req.body,
-      password: hashedPassword,
-    });
-    const result = await newUser.save();
-    res
-      .status(200)
-      .json({ data: result, message: 'User was added successfully.' });
-  } catch (error) {
-    res.status(500).json({ message: 'Unknown error occured!', error });
+  const result = await customerCreateService(req, User);
+  if (result.data) {
+    res.status(200).json(result);
+  } else {
+    res.status(400).json(result);
   }
 };
 
 // login
 const login = async (req, res) => {
-  try {
-    const userCursor = await User.aggregate([
-      {
-        $match: {
-          $or: [{ email: req.body.email }, { mobile: req.body.mobile }],
-        },
-      },
-      {
-        $project: {
-          email: 1,
-          firstName: 1,
-          lastName: 1,
-          phoneNo: 1,
-          password: 1,
-          photo: 1,
-        },
-      },
-    ]);
-
-    const user = userCursor[0];
-
-    if (user && user.email) {
-      const isValidPassword = await bcrypt.compare(req.body.password, user.password);
-      if (isValidPassword) {
-        const payload = {
-          name: `${user.firstName} ${user.lastName}`,
-          email: user.email,
-          phoneNo: user.phoneNo,
-          photo: user.photo,
-        };
-
-        const token = createToekn(payload);
-        res.status(200).json({ status: 'Success', token, data: payload });
-      } else {
-        res.status(401).json({ msg: 'Login failed! Please try again.' });
-      }
-    } else {
-      res.status(401).json({ msg: 'Login failed! Please try again.' });
-    }
-  } catch (error) {
-    res.status(401).json({ msg: error.message });
+  const result = await customerLoginService(req, User);
+  if (result.data && result.token) {
+    return res.status(200).json(result);
   }
+  return res.status(401).json(result);
 };
 
 // update profile

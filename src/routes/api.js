@@ -12,13 +12,24 @@ const {
   resetPassword,
 } = require('../controllers/customer/customersController');
 const authVerifyMiddleware = require('../middlewares/common/authVerifyModdleware');
+const {
+  addCustomerValidator,
+  addCustomerValidationHandler,
+} = require('../middlewares/customer/customerValidator');
 
 const router = express.Router();
+router.use(express.json());
+router.use(express.urlencoded({ extended: false }));
 
 router.get('/status', ItemController.status); // Checking Status
 
-// user related API
-router.post('/registration', registration);
+// customer API
+router.post(
+  '/registration',
+  addCustomerValidator,
+  addCustomerValidationHandler,
+  registration,
+);
 router.get('/profile', authVerifyMiddleware, getUserProfile);
 router.post('/login', login);
 router.post('/updateProfile', authVerifyMiddleware, updateProfile);
