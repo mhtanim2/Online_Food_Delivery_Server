@@ -1,6 +1,7 @@
 const DataModel = require("../../models/MenuItem/ItemCategoryModel");
 const CreateService = require("../../services/common/CreateService");
 const UpdateService = require("../../services/common/UpdateService")
+
 exports.CreateItemCategory = async (req, res) => {
     let Result = await CreateService(req, DataModel)
     debugger;
