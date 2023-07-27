@@ -45,6 +45,8 @@ router.post(
 );
 router.get('/ItemCategoryList', ItemCategoryController.ItemCategoryList);
 
+router.get('/categoryWiseNumOfMenuItem', ItemCategoryController.categoryWiseNumOfMenuItem);
+
 // Menu Item
 router.post('/CreateItem', ItemController.CreateItem);
 router.post('/UpdateItem/:id', ItemController.UpdateItem);

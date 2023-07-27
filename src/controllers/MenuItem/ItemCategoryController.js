@@ -1,29 +1,52 @@
-const DataModel = require("../../models/MenuItem/ItemCategoryModel");
-const CreateService = require("../../services/common/CreateService");
-const UpdateService = require("../../services/common/UpdateService")
+const DataModel = require('../../models/MenuItem/ItemCategoryModel');
+const CreateService = require('../../services/common/CreateService');
+const UpdateService = require('../../services/common/UpdateService');
 
 exports.CreateItemCategory = async (req, res) => {
-    let Result = await CreateService(req, DataModel)
-    debugger;
-    res.status(200).json(Result)
-}
+  const Result = await CreateService(req, DataModel);
+  res.status(200).json(Result);
+};
 
 exports.UpdateItemCategory = async (req, res) => {
-    let Result = await UpdateService(req, DataModel)
-    res.status(200).json(Result)
-}
+  const Result = await UpdateService(req, DataModel);
+  res.status(200).json(Result);
+};
 
 exports.ItemCategoryList = async (req, res) => {
-    try {
-        let Result = await DataModel.find();
-        res.status(200).json({ status: "success", data: Result });
-    }
+  try {
+    const Result = await DataModel.find();
+    res.status(200).json({ status: 'success', data: Result });
+  } catch (error) {
+    res.status(200).json({ status: 'fail', data: error.toSting });
+  }
+};
 
-    catch (error) {
-
-        res.status(200).json({ status: "fail", data: error.toSting });
-    }
-
-
-}
-
+exports.categoryWiseNumOfMenuItem = async (req, res) => {
+  console.log('categoryWiseNumOfMenuItem');
+  try {
+    const Result = await DataModel.aggregate([
+      {
+        $lookup: {
+          from: 'items',
+          localField: '_id',
+          foreignField: 'CategoryId',
+          as: 'items',
+        },
+      },
+      {
+        $project: {
+          category: '$CategoryName', // Replace 'CategoryName' with the actual field name for the category in the "DataModel" collection.
+          numberOfMenuItems: { $size: '$items' },
+        },
+      },
+      {
+        $match: {
+          numberOfMenuItems: { $gt: 0 }, // Filter out categories with no menu items
+        },
+      },
+    ]);
+    res.status(200).json({ status: 'success', data: Result });
+  } catch (error) {
+    res.status(200).json({ status: 'fail', data: error });
+  }
+};
