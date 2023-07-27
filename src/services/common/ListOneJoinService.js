@@ -1,11 +1,9 @@
 const ListOneJoinService= async (Request, DataModel, SearchArray, JoinStage) => {
     try{
-        let pageNo = Number(Request.params.pageNo);
-        let perPage = Number(Request.params.perPage);
-        let searchValue = Request.params.searchKeyword;
-        let skipRow = (pageNo - 1) * perPage;
-        let data;
 
+        let searchValue = Request.params.searchKeyword;
+        
+        let data;
         if (searchValue!=="0") {
             data = await DataModel.aggregate([
                 JoinStage,
@@ -13,7 +11,7 @@ const ListOneJoinService= async (Request, DataModel, SearchArray, JoinStage) => 
                 {
                 $facet:{
                     Total:[{$count: "count"}],
-                    Rows:[{$skip: skipRow}, {$limit: perPage}]
+                    Rows:[]
                 }
                 }
             ])
@@ -26,16 +24,17 @@ const ListOneJoinService= async (Request, DataModel, SearchArray, JoinStage) => 
                 {
                 $facet:{
                     Total:[{$count: "count"}],
-                    Rows:[{$skip: skipRow}, {$limit: perPage}]
+                    Rows:[]
                 }
                 }
             ])
         }
-        
+        debugger;
         return {status: "success", data: data}
     
     }
     catch (error) {
+        debugger;
         return {status: "fail", data: error}
     }
 }

@@ -1,5 +1,4 @@
 const express = require('express');
-
 const ItemCategoryController = require('../controllers/MenuItem/ItemCategoryController');
 const ItemController = require('../controllers/MenuItem/ItemController');
 const {
@@ -28,18 +27,13 @@ router.post('/resetPassword', resetPassword);
 
 // Item Category
 router.post('/CreateItemCategory', ItemCategoryController.CreateItemCategory);
-router.post(
-  '/UpdateItemCategory/:id',
-  ItemCategoryController.UpdateItemCategory,
-);
+router.post('/UpdateItemCategory/:id', ItemCategoryController.UpdateItemCategory);
 router.get('/ItemCategoryList', ItemCategoryController.ItemCategoryList);
+router.get('/CategoryTypesDropDown', ItemCategoryController.CategoryTypesDropDown);
 
 // Menu Item
 router.post('/CreateItem', ItemController.CreateItem);
 router.post('/UpdateItem/:id', ItemController.UpdateItem);
-router.get(
-  '/ItemList/:pageNo/:perPage/:searchKeyword',
-  ItemController.ItemList,
-);
+router.get('/ItemList/:searchKeyword',ItemController.ItemList);
 
 module.exports = router;

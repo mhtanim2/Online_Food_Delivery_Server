@@ -54,7 +54,7 @@ app.get('*', (req, res) => {
 // Mongoose connection and run the server
 const URI = process.env.DATABASE
   || 'mongodb+srv://<username>:<password>@cluster0.dfxgpct.mongodb.net/food_delivery?retryWrites=true&w=majority';
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 mongoose
     .connect(URI, {
