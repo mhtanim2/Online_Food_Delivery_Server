@@ -25,4 +25,34 @@ exports.ItemCategoryList = async (req, res) => {
 exports.CategoryTypesDropDown = async (req, res) => {
   const Result = await DropDownService(req, DataModel, { _id: 1, ItemCategory: 1 });
   res.status(200).json(Result);
+}
+
+exports.categoryWiseNumOfMenuItem = async (req, res) => {
+  console.log('categoryWiseNumOfMenuItem');
+  try {
+    const Result = await DataModel.aggregate([
+      {
+        $lookup: {
+          from: 'items',
+          localField: '_id',
+          foreignField: 'CategoryId',
+          as: 'items',
+        },
+      },
+      {
+        $project: {
+          category: '$CategoryName', // Replace 'CategoryName' with the actual field name for the category in the "DataModel" collection.
+          numberOfMenuItems: { $size: '$items' },
+        },
+      },
+      {
+        $match: {
+          numberOfMenuItems: { $gt: 0 }, // Filter out categories with no menu items
+        },
+      },
+    ]);
+    res.status(200).json({ status: 'success', data: Result });
+  } catch (error) {
+    res.status(200).json({ status: 'fail', data: error });
+  }
 };
