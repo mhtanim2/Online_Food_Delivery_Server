@@ -41,7 +41,6 @@ router.post('/CreateItemCategory', ItemCategoryController.CreateItemCategory);
 router.post('/UpdateItemCategory/:id', ItemCategoryController.UpdateItemCategory);
 router.get('/ItemCategoryList', ItemCategoryController.ItemCategoryList);
 router.get('/CategoryTypesDropDown', ItemCategoryController.CategoryTypesDropDown);
-
 router.get('/categoryWiseNumOfMenuItem', ItemCategoryController.categoryWiseNumOfMenuItem);
 
 // Menu Item
