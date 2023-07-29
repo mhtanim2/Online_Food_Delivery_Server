@@ -46,6 +46,9 @@ router.get('/categoryWiseNumOfMenuItem', ItemCategoryController.categoryWiseNumO
 // Menu Item
 router.post('/CreateItem', ItemController.CreateItem);
 router.post('/UpdateItem/:id', ItemController.UpdateItem);
-router.get('/ItemList/:searchKeyword',ItemController.ItemList);
-
+router.get('/ItemList/:searchKeyword', ItemController.ItemList);
+router.get('/categoryWiseItems',ItemController.categoryWiseItems);
 module.exports = router;
+
+
+

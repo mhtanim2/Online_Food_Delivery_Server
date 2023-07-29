@@ -1,7 +1,6 @@
 const DataModel = require('../../models/MenuItem/ItemCategoryModel');
 const CreateService = require('../../services/common/CreateService');
 const UpdateService = require('../../services/common/UpdateService');
-
 const DropDownService = require('../../services/common/DropDownService');
 
 exports.CreateItemCategory = async (req, res) => {
@@ -25,9 +24,7 @@ exports.ItemCategoryList = async (req, res) => {
 exports.CategoryTypesDropDown = async (req, res) => {
   const Result = await DropDownService(req, DataModel, { _id: 1, ItemCategory: 1 });
   res.status(200).json(Result);
-}
-
-
+};
 
 exports.categoryWiseNumOfMenuItem = async (req, res) => {
   console.log('categoryWiseNumOfMenuItem');
@@ -44,7 +41,7 @@ exports.categoryWiseNumOfMenuItem = async (req, res) => {
       {
         $project: {
           category: '$CategoryName', // Replace 'CategoryName' with the actual field name for the category in the "DataModel" collection.
-          ItemCategory:1,
+          ItemCategory: 1,
           numberOfMenuItems: { $size: '$items' },
         },
       },
@@ -54,7 +51,7 @@ exports.categoryWiseNumOfMenuItem = async (req, res) => {
         },
       },
     ]);
-    
+
     res.status(200).json({ status: 'success', data: Result });
   } catch (error) {
     res.status(200).json({ status: 'fail', data: error });
