@@ -1,42 +1,34 @@
-const ListOneJoinService= async (Request, DataModel, SearchArray, JoinStage) => {
-    try{
+const ListOneJoinService = async (Request, DataModel, SearchArray, JoinStage) => {
+  try {
+    const searchValue = Request.params.searchKeyword;
 
-        let searchValue = Request.params.searchKeyword;
-        
-        let data;
-        if (searchValue!=="0") {
-            data = await DataModel.aggregate([
-                JoinStage,
-                {$match: {$or: SearchArray}},
-                {
-                $facet:{
-                    Total:[{$count: "count"}],
-                    Rows:[]
-                }
-                }
-            ])
-
-        }
-
-        else {
-            data = await DataModel.aggregate([
-                JoinStage,
-                {
-                $facet:{
-                    Total:[{$count: "count"}],
-                    Rows:[]
-                }
-                }
-            ])
-        }
-        debugger;
-        return {status: "success", data: data}
-    
+    let data;
+    if (searchValue !== '0') {
+      data = await DataModel.aggregate([
+        JoinStage,
+        { $match: { $or: SearchArray } },
+        {
+          $facet: {
+            Total: [{ $count: 'count' }],
+            Rows: [],
+          },
+        },
+      ]);
+    } else {
+      data = await DataModel.aggregate([
+        JoinStage,
+        {
+          $facet: {
+            Total: [{ $count: 'count' }],
+            Rows: [],
+          },
+        },
+      ]);
     }
-    catch (error) {
-        debugger;
-        return {status: "fail", data: error}
-    }
-}
+    return { status: 'success', data };
+  } catch (error) {
+    return { status: 'fail', data: error };
+  }
+};
 
-module.exports=ListOneJoinService
+module.exports = ListOneJoinService;

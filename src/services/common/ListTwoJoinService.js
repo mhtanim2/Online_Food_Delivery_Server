@@ -1,42 +1,38 @@
-const ListTwoJoinService= async (Request, DataModel, SearchArray, JoinStage1,JoinStage2) => {
-    try{
-        let pageNo = Number(Request.params.pageNo);
-        let perPage = Number(Request.params.perPage);
-        let searchValue = Request.params.searchKeyword;
-        let UserEmail=Request.headers['email'];
-        let skipRow = (pageNo - 1) * perPage;
-        let data;
-        if (searchValue!=="0") {
-            data = await DataModel.aggregate([
-                {$match: {UserEmail:UserEmail}},
-                JoinStage1,JoinStage2,
-                {$match: {$or: SearchArray}},
-                {
-                    $facet:{
-                        Total:[{$count: "count"}],
-                        Rows:[{$skip: skipRow}, {$limit: perPage}],
-                    }
-                }
-            ])
-        }
-        else {
-
-            data = await DataModel.aggregate([
-                {$match: {UserEmail:UserEmail}},
-                JoinStage1,JoinStage2,
-                {
-                $facet:{
-                    Total:[{$count: "count"}],
-                    Rows:[{$skip: skipRow}, {$limit: perPage}],
-                }
-                }
-            ])
-
-        }
-        return {status: "success", data: data}
+const ListTwoJoinService = async (Request, DataModel, SearchArray, JoinStage1, JoinStage2) => {
+  try {
+    const pageNo = Number(Request.params.pageNo);
+    const perPage = Number(Request.params.perPage);
+    const searchValue = Request.params.searchKeyword;
+    const UserEmail = Request.headers.email;
+    const skipRow = (pageNo - 1) * perPage;
+    let data;
+    if (searchValue !== '0') {
+      data = await DataModel.aggregate([
+        { $match: { UserEmail } },
+        JoinStage1, JoinStage2,
+        { $match: { $or: SearchArray } },
+        {
+          $facet: {
+            Total: [{ $count: 'count' }],
+            Rows: [{ $skip: skipRow }, { $limit: perPage }],
+          },
+        },
+      ]);
+    } else {
+      data = await DataModel.aggregate([
+        { $match: { UserEmail } },
+        JoinStage1, JoinStage2,
+        {
+          $facet: {
+            Total: [{ $count: 'count' }],
+            Rows: [{ $skip: skipRow }, { $limit: perPage }],
+          },
+        },
+      ]);
     }
-    catch (error) {
-        return {status: "fail", data: error}
-    }
-}
-module.exports=ListTwoJoinService
+    return { status: 'success', data };
+  } catch (error) {
+    return { status: 'fail', data: error };
+  }
+};
+module.exports = ListTwoJoinService;
