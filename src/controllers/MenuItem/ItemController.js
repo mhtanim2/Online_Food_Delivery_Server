@@ -41,7 +41,6 @@ exports.categoryWiseItems = async (req, res) => {
         as: 'category',
       },
     };
-    
     const Result = await ListOneJoinServiceCategory(req, DataModel, JoinStage);
     res.status(200).json(Result);
   } catch (error) {
