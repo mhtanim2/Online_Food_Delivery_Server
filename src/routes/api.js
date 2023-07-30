@@ -49,6 +49,3 @@ router.post('/UpdateItem/:id', ItemController.UpdateItem);
 router.get('/ItemList/:searchKeyword', ItemController.ItemList);
 router.get('/categoryWiseItems',ItemController.categoryWiseItems);
 module.exports = router;
-
-
-
