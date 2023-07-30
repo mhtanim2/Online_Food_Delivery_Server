@@ -22,7 +22,6 @@ exports.ItemCategoryList = async (req, res) => {
 };
 
 exports.categoryWiseNumOfMenuItem = async (req, res) => {
-  console.log('categoryWiseNumOfMenuItem');
   try {
     const Result = await DataModel.aggregate([
       {
@@ -36,6 +35,7 @@ exports.categoryWiseNumOfMenuItem = async (req, res) => {
       {
         $project: {
           category: '$CategoryName', // Replace 'CategoryName' with the actual field name for the category in the "DataModel" collection.
+          ItemCategory: 1,
           numberOfMenuItems: { $size: '$items' },
         },
       },

@@ -51,7 +51,7 @@ router.get('/categoryWiseNumOfMenuItem', ItemCategoryController.categoryWiseNumO
 router.post('/CreateItem', ItemController.CreateItem);
 router.post('/UpdateItem/:id', ItemController.UpdateItem);
 router.get(
-  '/ItemList/:pageNo/:perPage/:searchKeyword',
+  '/ItemList/:searchKeyword',
   ItemController.ItemList,
 );
 

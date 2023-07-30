@@ -1,43 +1,35 @@
-const ListOneJoinService= async (Request, DataModel, SearchArray, JoinStage) => {
-    try{
-        let pageNo = Number(Request.params.pageNo);
-        let perPage = Number(Request.params.perPage);
-        let searchValue = Request.params.searchKeyword;
-        let skipRow = (pageNo - 1) * perPage;
-        let data;
+const ListOneJoinService = async (Request, DataModel, SearchArray, JoinStage) => {
+  try {
+    const searchValue = Request.params.searchKeyword;
+    let data;
 
-        if (searchValue!=="0") {
-            data = await DataModel.aggregate([
-                JoinStage,
-                {$match: {$or: SearchArray}},
-                {
-                $facet:{
-                    Total:[{$count: "count"}],
-                    Rows:[{$skip: skipRow}, {$limit: perPage}]
-                }
-                }
-            ])
-
-        }
-
-        else {
-            data = await DataModel.aggregate([
-                JoinStage,
-                {
-                $facet:{
-                    Total:[{$count: "count"}],
-                    Rows:[{$skip: skipRow}, {$limit: perPage}]
-                }
-                }
-            ])
-        }
-        
-        return {status: "success", data: data}
-    
+    if (searchValue !== '0') {
+      data = await DataModel.aggregate([
+        JoinStage,
+        { $match: { $or: SearchArray } },
+        {
+          $facet: {
+            Total: [{ $count: 'count' }],
+            Rows: [],
+          },
+        },
+      ]);
+    } else {
+      data = await DataModel.aggregate([
+        JoinStage,
+        {
+          $facet: {
+            Total: [{ $count: 'count' }],
+            Rows: [],
+          },
+        },
+      ]);
     }
-    catch (error) {
-        return {status: "fail", data: error}
-    }
-}
 
-module.exports=ListOneJoinService
+    return { status: 'success', data };
+  } catch (error) {
+    return { status: 'fail', data: error };
+  }
+};
+
+module.exports = ListOneJoinService;
