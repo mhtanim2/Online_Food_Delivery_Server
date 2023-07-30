@@ -1,8 +1,8 @@
 const ListOneJoinService = async (Request, DataModel, SearchArray, JoinStage) => {
   try {
     const searchValue = Request.params.searchKeyword;
-    let data;
 
+    let data;
     if (searchValue !== '0') {
       data = await DataModel.aggregate([
         JoinStage,
@@ -25,7 +25,6 @@ const ListOneJoinService = async (Request, DataModel, SearchArray, JoinStage) =>
         },
       ]);
     }
-
     return { status: 'success', data };
   } catch (error) {
     return { status: 'fail', data: error };

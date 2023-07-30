@@ -1,6 +1,7 @@
 const DataModel = require('../../models/MenuItem/ItemCategoryModel');
 const CreateService = require('../../services/common/CreateService');
 const UpdateService = require('../../services/common/UpdateService');
+const DropDownService = require('../../services/common/DropDownService');
 
 exports.CreateItemCategory = async (req, res) => {
   const Result = await CreateService(req, DataModel);
@@ -19,6 +20,10 @@ exports.ItemCategoryList = async (req, res) => {
   } catch (error) {
     res.status(200).json({ status: 'fail', data: error.toSting });
   }
+};
+exports.CategoryTypesDropDown = async (req, res) => {
+  const Result = await DropDownService(req, DataModel, { _id: 1, ItemCategory: 1 });
+  res.status(200).json(Result);
 };
 
 exports.categoryWiseNumOfMenuItem = async (req, res) => {
@@ -45,6 +50,7 @@ exports.categoryWiseNumOfMenuItem = async (req, res) => {
         },
       },
     ]);
+
     res.status(200).json({ status: 'success', data: Result });
   } catch (error) {
     res.status(200).json({ status: 'fail', data: error });
