@@ -3,7 +3,7 @@ const CreateService = require('../../services/common/CreateService');
 const ListOneJoinService = require('../../services/common/ListOneJoinService');
 const UpdateService = require('../../services/common/UpdateService');
 const ListOneJoinServiceCategory = require('../../services/common/ListOneJoinServiceCategory');
-
+const DeleteService = require('../../services/common/DeleteService');
 exports.status = async (req, res) => {
   res.status(200).json({ status: 'success', message: 'The backend is running' });
 };
@@ -47,3 +47,9 @@ exports.categoryWiseItems = async (req, res) => {
     res.status(200).json(Result);
   }
 };
+
+exports.deleteItem = async (req, res) => {
+
+    let Result = await DeleteService(req, DataModel);
+    res.status(200).json(Result)
+}

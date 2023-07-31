@@ -1,8 +1,12 @@
 const DataModel = require('../../models/MenuItem/ItemCategoryModel');
+const ItemModel = require('../../models/MenuItem/ItemModel');
 const CreateService = require('../../services/common/CreateService');
 const UpdateService = require('../../services/common/UpdateService');
 const DropDownService = require('../../services/common/DropDownService');
-
+const DeleteService = require('../../services/common/DeleteService');
+const CheckAssociateService = require('../../services/common/CheckAssociateService');
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 exports.CreateItemCategory = async (req, res) => {
   const Result = await CreateService(req, DataModel);
   res.status(200).json(Result);
@@ -56,3 +60,18 @@ exports.categoryWiseNumOfMenuItem = async (req, res) => {
     res.status(200).json({ status: 'fail', data: error });
   }
 };
+
+
+exports.deleteCategory = async (req, res) => {
+
+  let DeleteID = req.params.id;
+  let CheckAssociate = await CheckAssociateService({ CategoryId: ObjectId(DeleteID) }, ItemModel);
+
+  if (CheckAssociate) {
+    res.status(200).json({ status: "associate", data: "Associate with Expenses" })
+  }
+  else {
+    let Result = await DeleteService(req, DataModel);
+    res.status(200).json(Result)
+  }
+}
