@@ -3,6 +3,9 @@ const ListOneJoinServiceCategory = async (Request, DataModel, JoinStage) => {
     const data = await DataModel.aggregate([
       JoinStage,
       {
+        $unwind: '$category',
+      },
+      {
         $group: {
           _id: '$category._id',
           ItemCategory: { $first: '$category.ItemCategory' },
