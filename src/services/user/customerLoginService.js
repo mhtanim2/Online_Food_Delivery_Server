@@ -11,6 +11,7 @@ const customerLoginService = async (req, DataModel) => {
       },
       {
         $project: {
+          _id: 1,
           email: 1,
           firstName: 1,
           lastName: 1,
@@ -30,6 +31,7 @@ const customerLoginService = async (req, DataModel) => {
       );
       if (isValidPassword) {
         const payload = {
+          _id: user._id,
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,

@@ -9,6 +9,9 @@ const {
   recoverVerifyEmail,
   recoverVerifyOTP,
   resetPassword,
+  addLocation,
+  getLocations,
+  deleteLocation,
 } = require('../controllers/customer/customersController');
 const authVerifyMiddleware = require('../middlewares/common/authVerifyModdleware');
 const {
@@ -35,6 +38,9 @@ router.post('/updateProfile', authVerifyMiddleware, updateProfile);
 router.get('/recoverVerifyEmail/:email', recoverVerifyEmail);
 router.get('/recoverVerifyOTP/:email/:otp', recoverVerifyOTP);
 router.post('/resetPassword', resetPassword);
+router.post('/addLocation', authVerifyMiddleware, addLocation);
+router.get('/getLocations', authVerifyMiddleware, getLocations);
+router.get('/deleteLocation/:id', deleteLocation);
 
 // Item Category
 router.post('/CreateItemCategory', ItemCategoryController.CreateItemCategory);

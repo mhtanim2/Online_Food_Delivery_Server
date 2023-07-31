@@ -1,9 +1,11 @@
 const bcrypt = require('bcrypt');
 const User = require('../../models/customer/customerModel');
+const Location = require('../../models/customer/customerLocationModel');  
 const OTPModel = require('../../models/customer/OTPModel');
 const sendEmailUtility = require('../../utility/sendEmailUtility');
 const customerCreateService = require('../../services/user/customerCreateService');
 const customerLoginService = require('../../services/user/customerLoginService');
+const customerAddLocationSrvice = require('../../services/user/customerLocationService');
 
 // registration
 const registration = async (req, res) => {
@@ -119,6 +121,36 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const addLocation = async(req, res) => {
+  const result = await customerAddLocationSrvice(req, Location);
+  if (result.data) {
+    res.status(200).json(result);
+  } else {
+    res.status(400).json(result);
+  }
+}
+
+const getLocations = async(req, res) => {
+  const { id } = req.headers;
+  try {
+    const locations = await Location.find({ userId: id });
+    res.status(200).json({ status: 'Success', data: locations });
+  } catch (error) {
+    res.status(400).json({ status: 'fail', data: error.toStrign() });
+  }
+}
+
+const deleteLocation = async(req, res) => {
+  console.log("locatino")
+  const { userId, id } = req.params;
+  try {
+    const result = await Location.deleteOne({ _id: id, userId });
+    res.status(200).json({ status: 'Success', data: result });
+  } catch (error) {
+    res.status(400).json({ status: 'fail', data: error.toStrign() });
+  }
+}
+
 module.exports = {
   registration,
   login,
@@ -127,4 +159,7 @@ module.exports = {
   recoverVerifyEmail,
   recoverVerifyOTP,
   resetPassword,
+  addLocation,
+  getLocations,
+  deleteLocation
 };
