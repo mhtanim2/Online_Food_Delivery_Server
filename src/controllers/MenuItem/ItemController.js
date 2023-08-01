@@ -33,6 +33,7 @@ exports.UpdateItem = async (req, res) => {
 exports.categoryWiseItems = async (req, res) => {
   console.log('requested');
   try {
+    const SearchRgx = { $regex: req.params.searchKeyword, $options: 'i' };
     const JoinStage = {
       $lookup: {
         from: 'itemcategories',
@@ -41,7 +42,8 @@ exports.categoryWiseItems = async (req, res) => {
         as: 'category',
       },
     };
-    const Result = await ListOneJoinServiceCategory(req, DataModel, JoinStage);
+    const SearchArray = [{ ItemName: SearchRgx }, { 'category.ItemCategory': SearchRgx }];
+const Result = await ListOneJoinServiceCategory(req, DataModel,SearchArray, JoinStage);
     res.status(200).json(Result);
   } catch (error) {
     res.status(200).json(Result);
@@ -50,6 +52,6 @@ exports.categoryWiseItems = async (req, res) => {
 
 exports.deleteItem = async (req, res) => {
 
-    let Result = await DeleteService(req, DataModel);
-    res.status(200).json(Result)
+  let Result = await DeleteService(req, DataModel);
+  res.status(200).json(Result)
 }

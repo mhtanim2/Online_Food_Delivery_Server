@@ -54,7 +54,7 @@ router.get('/deleteCategory/:id', ItemCategoryController.deleteCategory);
 router.post('/CreateItem', ItemController.CreateItem);
 router.post('/UpdateItem/:id', ItemController.UpdateItem);
 router.get('/ItemList/:searchKeyword', ItemController.ItemList);
-router.get('/categoryWiseItems', ItemController.categoryWiseItems);
+router.get('/categoryWiseItems/:searchKeyword', ItemController.categoryWiseItems);
 router.get('/deleteItem/:id',ItemController.deleteItem );
 
 
