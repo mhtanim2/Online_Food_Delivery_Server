@@ -43,7 +43,7 @@ exports.categoryWiseItems = async (req, res) => {
       },
     };
     const SearchArray = [{ ItemName: SearchRgx }, { 'category.ItemCategory': SearchRgx }];
-const Result = await ListOneJoinServiceCategory(req, DataModel,SearchArray, JoinStage);
+    const Result = await ListOneJoinServiceCategory(req, DataModel, SearchArray, JoinStage);
     res.status(200).json(Result);
   } catch (error) {
     res.status(200).json(Result);
