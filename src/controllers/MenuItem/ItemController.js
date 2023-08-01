@@ -31,7 +31,6 @@ exports.UpdateItem = async (req, res) => {
 };
 
 exports.categoryWiseItems = async (req, res) => {
-  console.log('requested');
   try {
     const JoinStage = {
       $lookup: {
